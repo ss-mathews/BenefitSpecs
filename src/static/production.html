@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BenefitSpecs - See your benefits clearly</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo-icon {
+            width: 120px;
+            height: 120px;
+            margin-right: 20px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-icon::before {
+            content: '👓';
+            font-size: 80px;
+            color: white;
+            filter: drop-shadow(0 0 2px rgba(255,255,255,0.8));
+        }
+        
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .demo-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .demo-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .demo-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 20px;
+            color: white;
+        }
+        
+        .reconciliation .demo-icon {
+            background: #3b82f6;
+        }
+        
+        .census .demo-icon {
+            background: #10b981;
+        }
+        
+        .benefit-analysis .demo-icon {
+            background: #8b5cf6;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            color: #1f2937;
+        }
+        
+        .demo-description {
+            color: #6b7280;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        /* Form styling */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: border-color 0.2s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .file-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            background: #f9fafb;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .file-input:hover {
+            border-color: #9ca3af;
+            background: #f3f4f6;
+        }
+        
+        .demo-button {
+            width: 100%;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .reconciliation .demo-button {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+        
+        .reconciliation .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .census .demo-button {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .census .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .benefit-analysis .demo-button {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+        
+        .benefit-analysis .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+        }
+        
+        .demo-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .results {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .results.show {
+            display: block;
+        }
+        
+        .results.error {
+            background: #fef2f2;
+            border-left-color: #ef4444;
+        }
+        
+        .results.success {
+            background: #f0fdf4;
+            border-left-color: #22c55e;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .note {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 0.875rem;
+            color: #1e40af;
+        }
+        
+        .features-section {
+            background: linear-gradient(135deg, #1e40af, #3730a3);
+            border-radius: 20px;
+            padding: 60px 40px;
+            color: white;
+            text-align: center;
+        }
+        
+        .features-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: white;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .feature {
+            text-align: center;
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+        }
+        
+        .feature h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+        }
+        
+        .feature p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <div>
+                    <h1>BenefitSpecs</h1>
+                    <p class="tagline">See your benefits clearly</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-grid">
+            <!-- Reconciliation Section -->
+            <div class="demo-card reconciliation">
+                <div class="demo-header">
+                    <div class="demo-icon">📊</div>
+                    <h2>Reconciliation</h2>
+                </div>
+                <p class="demo-description">Upload your benadmin, carrier, and payroll files to automatically identify discrepancies between payroll deductions and carrier billing.</p>
+                
+                <form id="reconciliation-form">
+                    <div class="form-group">
+                        <label class="form-label">Group Name</label>
+                        <input type="text" class="form-input" name="group_name" placeholder="Enter group name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Month/Year</label>
+                        <input type="month" class="form-input" name="month_year" value="2025-07" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Benadmin File (Optional)</label>
+                        <input type="file" class="file-input" name="benadmin_file" accept=".csv,.xlsx,.xls">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Carrier File (Optional)</label>
+                        <input type="file" class="file-input" name="carrier_file" accept=".csv,.xlsx,.xls">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Payroll File (Optional)</label>
+                        <input type="file" class="file-input" name="payroll_file" accept=".csv,.xlsx,.xls">
+                    </div>
+                    
+                    <div class="note">
+                        <strong>Note:</strong> Please upload at least 2 files for reconciliation (any combination of benadmin, carrier, and payroll files).
+                    </div>
+                    
+                    <button type="submit" class="demo-button">
+                        <span class="button-text">Process Reconciliation</span>
+                    </button>
+                </form>
+                
+                <div id="reconciliation-results" class="results">
+                    <div class="results-content"></div>
+                </div>
+            </div>
+            
+            <!-- Census Analysis Section -->
+            <div class="demo-card census">
+                <div class="demo-header">
+                    <div class="demo-icon">👥</div>
+                    <h2>Census Analysis</h2>
+                </div>
+                <p class="demo-description">Analyze employee demographics from your payroll data to generate insights for benefits planning.</p>
+                
+                <form id="census-form">
+                    <div class="form-group">
+                        <label class="form-label">Group Name</label>
+                        <input type="text" class="form-input" name="group_name" placeholder="Enter group name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Month/Year</label>
+                        <input type="month" class="form-input" name="month_year" value="2025-07" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Payroll File</label>
+                        <input type="file" class="file-input" name="payroll_file" accept=".csv,.xlsx,.xls" required>
+                    </div>
+                    
+                    <button type="submit" class="demo-button">
+                        <span class="button-text">Analyze Census</span>
+                    </button>
+                </form>
+                
+                <div id="census-results" class="results">
+                    <div class="results-content"></div>
+                </div>
+            </div>
+            
+            <!-- Benefit Analysis Section -->
+            <div class="demo-card benefit-analysis">
+                <div class="demo-header">
+                    <div class="demo-icon">🎯</div>
+                    <h2>Benefit Analysis</h2>
+                </div>
+                <p class="demo-description">Get data-driven benefit plan recommendations based on employee demographics and risk profiles.</p>
+                
+                <form id="benefit-analysis-form">
+                    <div class="form-group">
+                        <label class="form-label">Group Name</label>
+                        <input type="text" class="form-input" name="group_name" placeholder="Enter group name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Month/Year</label>
+                        <input type="month" class="form-input" name="month_year" value="2025-07" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Payroll File</label>
+                        <input type="file" class="file-input" name="payroll_file" accept=".csv,.xlsx,.xls" required>
+                    </div>
+                    
+                    <button type="submit" class="demo-button">
+                        <span class="button-text">Analyze Benefits</span>
+                    </button>
+                </form>
+                
+                <div id="benefit-analysis-results" class="results">
+                    <div class="results-content"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="features-section">
+            <h2>Why BenefitSpecs?</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>Save Time</h3>
+                    <p>Automate manual reconciliation processes that typically take hours</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📈</div>
+                    <h3>Increase Accuracy</h3>
+                    <p>Eliminate human errors with automated data comparison</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📋</div>
+                    <h3>Professional Reports</h3>
+                    <p>Generate client-ready reports with detailed analysis</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Smart Recommendations</h3>
+                    <p>Data-driven benefit plan recommendations based on demographics</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Form submission handling
+        async function submitForm(formId, endpoint) {
+            const form = document.getElementById(formId);
+            const button = form.querySelector('.demo-button');
+            const buttonText = button.querySelector('.button-text');
+            const resultsDiv = document.getElementById(formId.replace('-form', '-results'));
+            const resultsContent = resultsDiv.querySelector('.results-content');
+            
+            // Validation for reconciliation form
+            if (formId === 'reconciliation-form') {
+                const benadminFile = form.querySelector('input[name="benadmin_file"]').files.length > 0;
+                const carrierFile = form.querySelector('input[name="carrier_file"]').files.length > 0;
+                const payrollFile = form.querySelector('input[name="payroll_file"]').files.length > 0;
+                const fileCount = [benadminFile, carrierFile, payrollFile].filter(Boolean).length;
+                
+                if (fileCount < 2) {
+                    alert('Please upload at least 2 files for reconciliation.');
+                    return;
+                }
+            }
+            
+            // Show loading state
+            button.disabled = true;
+            buttonText.innerHTML = '<span class="loading"></span> Processing...';
+            resultsDiv.classList.remove('show', 'error', 'success');
+            
+            try {
+                const formData = new FormData(form);
+                const response = await fetch(`/api/${endpoint}`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    resultsDiv.classList.add('show', 'success');
+                    resultsContent.innerHTML = formatResults(result.data, endpoint);
+                } else {
+                    resultsDiv.classList.add('show', 'error');
+                    resultsContent.innerHTML = `<strong>Error:</strong> ${result.error}`;
+                }
+            } catch (error) {
+                resultsDiv.classList.add('show', 'error');
+                resultsContent.innerHTML = `<strong>Error:</strong> ${error.message}`;
+            } finally {
+                // Reset button state
+                button.disabled = false;
+                const originalText = formId === 'reconciliation-form' ? 'Process Reconciliation' :
+                                   formId === 'census-form' ? 'Analyze Census' : 'Analyze Benefits';
+                buttonText.textContent = originalText;
+            }
+        }
+        
+        function formatResults(data, type) {
+            let html = `<strong>Group:</strong> ${data.group_name}<br>`;
+            html += `<strong>Period:</strong> ${data.month_year}<br><br>`;
+            
+            if (type === 'reconciliation') {
+                html += `<strong>Analysis Complete!</strong><br>`;
+                html += `Total Employees: ${data.summary?.total_employees || 'N/A'}<br>`;
+                html += `Errors Found: ${data.summary?.errors_found || 'N/A'}<br>`;
+                html += `Error Rate: ${data.summary?.error_rate || 'N/A'}<br>`;
+                html += `Time Saved: ${data.summary?.time_saved || 'N/A'}`;
+            } else if (type === 'census') {
+                html += `<strong>Census Analysis Complete!</strong><br>`;
+                html += `Total Employees: ${data.summary?.total_employees || 'N/A'}<br>`;
+                html += `Average Age: ${data.summary?.average_age || 'N/A'}<br>`;
+                html += `Average Salary: $${data.summary?.average_salary?.toLocaleString() || 'N/A'}`;
+            } else if (type === 'benefit-analysis') {
+                html += `<strong>Benefit Analysis Complete!</strong><br>`;
+                html += `Coverage Recommendations: ${data.summary?.coverage_recommendations || 'N/A'}<br>`;
+                html += `High Priority Plans: ${data.summary?.high_priority_recommendations || 'N/A'}<br>`;
+                html += `Estimated Annual Premium: $${data.summary?.estimated_annual_premium?.toLocaleString() || 'N/A'}`;
+            }
+            
+            return html;
+        }
+        
+        // Form event listeners
+        document.getElementById('reconciliation-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitForm('reconciliation-form', 'reconciliation');
+        });
+        
+        document.getElementById('census-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitForm('census-form', 'census');
+        });
+        
+        document.getElementById('benefit-analysis-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitForm('benefit-analysis-form', 'benefit-analysis');
+        });
+    </script>
+</body>
+</html>
+
