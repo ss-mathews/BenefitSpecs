@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Page</title>
+</head>
+<body>
+    <h1>Test Date and File Upload</h1>
+    
+    <form>
+        <div>
+            <label>Month/Year:</label>
+            <input type="month" name="month_year" id="test-date">
+        </div>
+        
+        <div>
+            <label>Test File:</label>
+            <input type="file" name="test_file" id="test-file">
+        </div>
+    </form>
+    
+    <script>
+        console.log('Test script starting...');
+        
+        // Set date immediately
+        const currentMonth = new Date().toISOString().slice(0, 7);
+        console.log('Current month:', currentMonth);
+        
+        const dateInput = document.getElementById('test-date');
+        if (dateInput) {
+            dateInput.value = currentMonth;
+            console.log('Date set to:', dateInput.value);
+        } else {
+            console.log('Date input not found');
+        }
+        
+        // Test file input
+        const fileInput = document.getElementById('test-file');
+        if (fileInput) {
+            fileInput.addEventListener('change', function() {
+                console.log('File changed:', this.files.length);
+            });
+            console.log('File input listener added');
+        } else {
+            console.log('File input not found');
+        }
+    </script>
+</body>
+</html>
+
